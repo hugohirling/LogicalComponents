@@ -14,4 +14,9 @@ public class ComponentTrace {
         this.inputKnot = inputKnot;
         this.inputKnot.setTrace(Optional.of(this));
     }
+
+    public void removeTrace() {
+        this.outputKnot.removeTrace();
+        this.inputKnot.removeTrace();
+    }
 }

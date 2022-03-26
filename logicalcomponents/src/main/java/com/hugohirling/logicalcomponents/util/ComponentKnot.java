@@ -41,4 +41,7 @@ public class ComponentKnot {
     public void setTrace(final Optional<ComponentTrace> trace) {
         this.trace = trace;
     }
+    public void removeTrace() {
+        this.trace = Optional.empty();
+    }
 }
