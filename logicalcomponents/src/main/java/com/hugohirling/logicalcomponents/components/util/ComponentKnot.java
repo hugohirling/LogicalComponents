@@ -1,12 +1,15 @@
-package com.hugohirling.logicalcomponents.util;
+package com.hugohirling.logicalcomponents.components.util;
 
 import java.util.Optional;
 
 /**
  * @author Hugo Hirling
- * @version 1.0
+ * @version 30.03.2022
+ * @url https://hugohirling.com
+ * 
+ * Represents the Input/Output of a component.
+ * Has true/false value for the logical numbers 0/1.
  */
-
 public class ComponentKnot {
     
     private boolean status;

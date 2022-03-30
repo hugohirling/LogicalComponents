@@ -16,4 +16,8 @@ public class ORComponent extends SingleComponent {
         return false;
     }
 
+    @Override
+    public String getName() {
+        return "OR";
+    }
 }

@@ -1,7 +1,14 @@
-package com.hugohirling.logicalcomponents.util;
+package com.hugohirling.logicalcomponents.components.util;
 
 import java.util.Optional;
 
+/**
+ * @author Hugo Hirling
+ * @version 30.03.2022
+ * @url https://hugohirling.com
+ * 
+ * Represents the cable between two components.
+ */
 public class ComponentTrace {
     
     private final ComponentKnot outputKnot;

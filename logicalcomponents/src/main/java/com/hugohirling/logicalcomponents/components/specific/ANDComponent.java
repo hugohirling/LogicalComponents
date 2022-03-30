@@ -16,4 +16,9 @@ public class ANDComponent extends SingleComponent {
         return false;
     }
 
+    @Override
+    public String getName() {
+        return "AND";
+    }
+
 }
