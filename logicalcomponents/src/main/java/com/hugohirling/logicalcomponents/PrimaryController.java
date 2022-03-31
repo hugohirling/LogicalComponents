@@ -95,5 +95,13 @@ public class PrimaryController{
         actionPane.getChildren().addAll(this.inputList);
 
         draggable.makeDraggable(this.componentList);
+
+        actionPane.setOnMouseClicked(mouseEvent -> {
+            for (final GeneralInputNode node : this.inputList) {
+                if (!node.equals(mouseEvent.getSource())) {
+                    actionPane.requestFocus();
+                }
+            }
+        });
     }
 }
