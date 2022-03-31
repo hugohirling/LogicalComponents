@@ -1,12 +1,14 @@
 package com.hugohirling.logicalcomponents.components;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.hugohirling.logicalcomponents.components.util.ComponentKnot;
+import com.hugohirling.logicalcomponents.gui.components.ComponentNode;
 
 /**
  * @author Hugo Hirling
- * @version 30.03.2022
+ * @version 31.03.2022
  * @url https://hugohirling.com
  * 
  * A logical component
@@ -37,4 +39,16 @@ public interface Component {
      * @return name of logical component
      */
     public String getName();
+
+    /**
+     * Returns GUI Node which represents this component
+     * 
+     * @return representative node
+     */
+    public Optional<ComponentNode> getNode();
+
+    /**
+     * Sets GUI Node which represents this component
+     */
+    public void setNode(final ComponentNode node);
 }

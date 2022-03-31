@@ -43,7 +43,7 @@ public class Draggable {
             }
             if(newY > 0 && newY < (800-nodeHeight)) {
                 node.setLayoutY(newY);   
-            }    
+            }
         });
     }
 

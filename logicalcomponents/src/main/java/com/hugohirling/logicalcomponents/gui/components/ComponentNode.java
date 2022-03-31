@@ -17,10 +17,10 @@ import javafx.scene.text.TextAlignment;
 
 /**
  * @author Hugo Hirling
- * @version 30.03.2022
+ * @version 31.03.2022
  * @url https://hugohirling.com
  * 
- * Represents the graphical node of components/Component
+ * Represents the graphical node of /components/Component
  */
 public class ComponentNode extends Pane{
 
@@ -40,6 +40,7 @@ public class ComponentNode extends Pane{
     public ComponentNode(final Component component) {
         super();
         this.component = component;
+        this.component.setNode(this);
 
         //Define Text
         this.label = new Text(this.component.getName());
@@ -159,4 +160,15 @@ public class ComponentNode extends Pane{
         return height;
     }
 
+    public Component getComponent() {
+        return this.component;
+    }
+
+    public List<Point2D> getInputCords() {
+        return this.inputCords;
+    }
+    
+    public List<Point2D> getOutputCords() {
+        return this.outputCords;
+    }
 }
