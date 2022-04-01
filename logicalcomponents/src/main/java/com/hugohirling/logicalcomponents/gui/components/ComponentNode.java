@@ -18,7 +18,7 @@ import javafx.scene.text.TextAlignment;
 
 /**
  * @author Hugo Hirling
- * @version 31.03.2022
+ * @version 01.04.2022
  * @url https://hugohirling.com
  * 
  * Represents the graphical node of /components/Component
@@ -26,8 +26,8 @@ import javafx.scene.text.TextAlignment;
 public class ComponentNode extends Pane{
 
     private final Rectangle rectangle;
-    private final List<Arc> inputArcs;
-    private final List<Arc> outputArcs;
+    private final List<InputKnotNode> inputNodes;
+    private final List<OutputKnotNode> outputNodes;
     private final Text label;
 
     private final Component component;
@@ -69,17 +69,15 @@ public class ComponentNode extends Pane{
         
 
         //Define Arcs
-        this.inputArcs = this.inputCords.stream().map((point) -> 
-            new Arc(
-                point.getX(), point.getY(), 12.5, 12.5, 270, 180)
+        this.inputNodes = this.inputCords.stream().map((point) -> 
+            new InputKnotNode(point.getX(), point.getY())
         ).collect(Collectors.toList());
-        this.outputArcs = this.outputCords.stream().map((point) ->
-            new Arc(
-                point.getX(), point.getY(), 12.5, 12.5, 90, 180)
+        this.outputNodes = this.outputCords.stream().map((point) ->
+            new OutputKnotNode(point.getX(), point.getY())
         ).collect(Collectors.toList());
 
-        this.getChildren().addAll(this.inputArcs);
-        this.getChildren().addAll(this.outputArcs);
+        this.getChildren().addAll(this.inputNodes);
+        this.getChildren().addAll(this.outputNodes);
 
         //Arrange Text
         this.label.setX(this.compWidth/2 - this.label.getBoundsInLocal().getWidth()/2);
@@ -121,7 +119,7 @@ public class ComponentNode extends Pane{
      */
     private void colorize() {
         for(int i=0; i<this.component.getInputs().size(); i++) {
-            final Arc input = this.inputArcs.get(i);
+            final InputKnotNode input = this.inputNodes.get(i);
             if(this.component.getInputs().get(i).getStatus()) {
                 input.setFill(Color.RED);
             }else{
@@ -130,7 +128,7 @@ public class ComponentNode extends Pane{
         }
 
         for (int i = 0; i < this.component.getOutputs().size(); i++) {
-            final Arc output = this.outputArcs.get(i);
+            final OutputKnotNode output = this.outputNodes.get(i);
             if (this.component.getOutputs().get(i).getStatus()) {
                 output.setFill(Color.RED);
             } else {

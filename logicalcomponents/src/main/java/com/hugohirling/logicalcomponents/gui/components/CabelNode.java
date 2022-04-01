@@ -43,7 +43,7 @@ public class CabelNode extends Polyline implements InvalidationListener {
         if(this.trace.getInputKnot().getStatus()) {
            this.setStroke(Color.RED);
         } else {
-            this.setStroke(Color.RED);
+            this.setStroke(Color.BLACK);
         }
     }
 

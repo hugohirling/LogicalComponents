@@ -93,6 +93,23 @@ public class PrimaryController{
         actionPane.getChildren().add(new CabelNode(this.componentList.get(2), 0,
                 this.componentList.get(0), 0));
 
+        // this.inputList.forEach(input -> {
+        //         input.setListener(new KnotPullListener() {
+        //             @Override
+        //             public void onFirstPull(final double originX, final double originY, final double x, final double y) {
+        //                 input.setTempCabel(new TempCabelNode(originX, originY, x, y));
+        //             }
+        //             @Override
+        //             public void onPull(final double originX, final double originY, final double x, final double y) {
+        //                 input.getTempCabel().setNewTarget(x,y);
+        //             }
+        //             @Override
+        //             public void onRelease(final double originX, final double originY, final double x, final double y) {
+                        
+        //             }
+        //         });
+        //     }
+        // );
 
         actionPane.setOnMouseClicked(mouseEvent -> {
             for (final GeneralInputNode node : this.inputList) {
