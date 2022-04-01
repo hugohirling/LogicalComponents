@@ -36,6 +36,9 @@ public class ComponentNode extends Pane{
 
     private final double compHeight;
     private final double compWidth;
+
+    private double mouseAnchorX;
+    private double mouseAnchorY;
     
     public ComponentNode(final Component component) {
         super();
@@ -84,6 +87,23 @@ public class ComponentNode extends Pane{
         this.getChildren().add(this.label);
 
         this.colorize();
+
+        this.setOnMousePressed(event -> {
+            this.mouseAnchorX = event.getX();
+            this.mouseAnchorY = event.getY();
+        });
+
+        this.setOnMouseDragged(event -> {
+            final double newX = event.getSceneX() - this.mouseAnchorX - 200;
+            final double newY = event.getSceneY() - this.mouseAnchorY;
+
+            if (newX > 0 && newX < (1000 - this.compWidth)) {
+                this.setLayoutX(newX);
+            }
+            if (newY > 0 && newY < (800 - this.compHeight)) {
+                this.setLayoutY(newY);
+            }
+        });
     }
 
     /**
