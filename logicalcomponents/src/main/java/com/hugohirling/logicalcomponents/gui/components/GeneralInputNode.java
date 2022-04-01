@@ -1,12 +1,10 @@
 package com.hugohirling.logicalcomponents.gui.components;
 
-import com.hugohirling.logicalcomponents.util.KnotPullListener;
 
 import javafx.scene.control.Control;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Arc;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 
 
@@ -22,20 +20,24 @@ public class GeneralInputNode extends BorderPane{
     private final InputKnotNode inputKnotNode;
     private final TextField textField;
 
-    public GeneralInputNode(final double y) {
-        this(y, false, "Input");
+    private final Pane root;
+
+    public GeneralInputNode(final Pane root, final double y) {
+        this(root, y, false, "Input");
     }
-    public GeneralInputNode(final double y, final boolean status, final String textField) {
+    public GeneralInputNode(final Pane root, final double y, final boolean status, final String textField) {
         super();
         this.setLayoutX(0);
         this.setLayoutY(y);
+
+        this.root = root;
 
         this.textField = new TextField(textField);
         this.textField.setFont(new Font(15));
         this.textField.setPrefWidth(Control.USE_COMPUTED_SIZE);
         this.textField.prefColumnCountProperty().bind(this.textField.textProperty().length());
 
-        this.inputKnotNode = new InputKnotNode(0, 0, status);
+        this.inputKnotNode = new InputKnotNode(this.root, 0, 0, status, true);
 
         this.setLeft(this.inputKnotNode);
         this.setRight(this.textField);
@@ -43,6 +45,10 @@ public class GeneralInputNode extends BorderPane{
 
     public void setY(final double y) {
         this.setLayoutY(y);
+    }
+
+    public InputKnotNode getInputKnotNode() {
+        return this.inputKnotNode;
     }
 }
 

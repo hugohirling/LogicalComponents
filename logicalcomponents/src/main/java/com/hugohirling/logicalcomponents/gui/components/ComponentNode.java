@@ -38,13 +38,17 @@ public class ComponentNode extends Pane{
     private final double compHeight;
     private final double compWidth;
 
+    private final Pane root;
+
     private double mouseAnchorX;
     private double mouseAnchorY;
     
-    public ComponentNode(final Component component) {
+    public ComponentNode(final Pane root, final Component component) {
         super();
         this.component = component;
         this.component.setNode(this);
+
+        this.root = root;
 
         //Define Text
         this.label = new Text(this.component.getName());
@@ -70,10 +74,10 @@ public class ComponentNode extends Pane{
 
         //Define Arcs
         this.inputNodes = this.inputCords.stream().map((point) -> 
-            new InputKnotNode(point.getX(), point.getY())
+            new InputKnotNode(this.root, point.getX(), point.getY())
         ).collect(Collectors.toList());
         this.outputNodes = this.outputCords.stream().map((point) ->
-            new OutputKnotNode(point.getX(), point.getY())
+            new OutputKnotNode(this.root, point.getX(), point.getY())
         ).collect(Collectors.toList());
 
         this.getChildren().addAll(this.inputNodes);

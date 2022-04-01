@@ -10,6 +10,8 @@ import com.hugohirling.logicalcomponents.components.specific.ORComponent;
 import com.hugohirling.logicalcomponents.gui.components.CabelNode;
 import com.hugohirling.logicalcomponents.gui.components.ComponentNode;
 import com.hugohirling.logicalcomponents.gui.components.GeneralInputNode;
+import com.hugohirling.logicalcomponents.gui.components.TempCabelNode;
+import com.hugohirling.logicalcomponents.util.KnotPullListener;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
@@ -29,12 +31,7 @@ public class PrimaryController{
 
     public PrimaryController() {
         this.componentList = new ArrayList<>();
-        this.componentList.add(new ComponentNode(new ORComponent()));
-        this.componentList.add(new ComponentNode(new ANDComponent()));
-        this.componentList.add(new ComponentNode(new NOTComponent()));
-
         this.inputList = new ArrayList<>();
-        this.inputList.add(new GeneralInputNode(400));
     }
 
     @FXML
@@ -52,7 +49,8 @@ public class PrimaryController{
             for(int i=0; i<this.inputList.size(); i++) {
                 this.inputList.get(i).setY(startY + i*(diameter + spacer));
             }
-            this.inputList.add(new GeneralInputNode(startY + this.inputList.size()*(diameter + spacer)));
+            this.inputList.add(new GeneralInputNode(
+                    this.actionPane, startY + this.inputList.size()*(diameter + spacer)));
             actionPane.getChildren().add(this.inputList.get(this.inputList.size()-1));
         }
     }
@@ -86,6 +84,12 @@ public class PrimaryController{
 
     @FXML
     public void initialize() {
+        this.componentList.add(new ComponentNode(this.actionPane, new ORComponent()));
+        this.componentList.add(new ComponentNode(this.actionPane, new ANDComponent()));
+        this.componentList.add(new ComponentNode(this.actionPane, new NOTComponent()));
+
+        this.inputList.add(new GeneralInputNode(this.actionPane, 400));
+
         actionPane.getChildren().addAll(this.componentList);
 
         actionPane.getChildren().addAll(this.inputList);
@@ -93,23 +97,6 @@ public class PrimaryController{
         actionPane.getChildren().add(new CabelNode(this.componentList.get(2), 0,
                 this.componentList.get(0), 0));
 
-        // this.inputList.forEach(input -> {
-        //         input.setListener(new KnotPullListener() {
-        //             @Override
-        //             public void onFirstPull(final double originX, final double originY, final double x, final double y) {
-        //                 input.setTempCabel(new TempCabelNode(originX, originY, x, y));
-        //             }
-        //             @Override
-        //             public void onPull(final double originX, final double originY, final double x, final double y) {
-        //                 input.getTempCabel().setNewTarget(x,y);
-        //             }
-        //             @Override
-        //             public void onRelease(final double originX, final double originY, final double x, final double y) {
-                        
-        //             }
-        //         });
-        //     }
-        // );
 
         actionPane.setOnMouseClicked(mouseEvent -> {
             for (final GeneralInputNode node : this.inputList) {
