@@ -1,5 +1,7 @@
 package com.hugohirling.logicalcomponents.gui.components;
 
+import com.hugohirling.logicalcomponents.components.util.ComponentTrace;
+
 import javafx.beans.InvalidationListener;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
@@ -17,6 +19,7 @@ public class CabelNode extends Polyline implements InvalidationListener {
 
     private final ComponentNode inputNode;
     private final ComponentNode outputNode;
+    private final ComponentTrace trace;
     private final int inputIndex;
     private final int outputIndex;
 
@@ -25,6 +28,8 @@ public class CabelNode extends Polyline implements InvalidationListener {
         
         this.inputNode = inputNode;
         this.outputNode = outputNode;
+        this.trace = new ComponentTrace(this.inputNode.getComponent().getOutputs().get(inputIndex),
+            this.outputNode.getComponent().getInputs().get(outputIndex));
         this.inputIndex = inputIndex;
         this.outputIndex = outputIndex;
 
@@ -35,7 +40,7 @@ public class CabelNode extends Polyline implements InvalidationListener {
     }
 
     private void colorize() {
-        if(this.inputNode.getComponent().getOutputs().get(this.inputIndex).getStatus()) {
+        if(this.trace.getInputKnot().getStatus()) {
            this.setStroke(Color.RED);
         } else {
             this.setStroke(Color.RED);

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.hugohirling.logicalcomponents.components.Component;
+import com.hugohirling.logicalcomponents.components.util.KnotChangeListener;
 
 import javafx.geometry.Point2D;
 import javafx.scene.layout.Pane;
@@ -103,6 +104,15 @@ public class ComponentNode extends Pane{
             if (newY > 0 && newY < (800 - this.compHeight)) {
                 this.setLayoutY(newY);
             }
+        });
+    
+        this.component.getInputs().forEach(inputKnot -> {
+            inputKnot.setListener(new KnotChangeListener() {
+                @Override
+                public void onStatusChanged() {
+                    colorize();
+                }
+            });
         });
     }
 

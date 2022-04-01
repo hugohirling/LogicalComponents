@@ -6,7 +6,7 @@ import com.hugohirling.logicalcomponents.components.util.ComponentKnot.KnotType;
 
 /**
  * @author Hugo Hirling
- * @version 31.03.2022
+ * @version 01.04.2022
  * @url https://hugohirling.com
  * 
  * Represents the cable between two components.
@@ -16,7 +16,7 @@ public class ComponentTrace {
     private final ComponentKnot outputKnot;
     private final ComponentKnot inputKnot;
 
-    public ComponentTrace(final ComponentKnot outputKnot, final ComponentKnot inputKnot) {
+    public ComponentTrace(final ComponentKnot inputKnot, final ComponentKnot outputKnot) {
         if (inputKnot.getType() != KnotType.OUTPUT || outputKnot.getType() != KnotType.INPUT) {
             throw new IllegalArgumentException("InputKnot must be KnotType.OUTPUT. OutputKnot must be KnotType.INPUT.");
         }
@@ -26,6 +26,16 @@ public class ComponentTrace {
 
         this.inputKnot = inputKnot;
         this.inputKnot.setTrace(Optional.of(this));
+
+        this.step();
+    }
+
+    public void step() {
+        this.calcOutput();
+    }
+
+    private void calcOutput() {
+        this.outputKnot.setStatus(this.inputKnot.getStatus());
     }
 
     public void removeTrace() {
