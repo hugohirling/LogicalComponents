@@ -15,12 +15,12 @@
          <children>
             <SplitPane blendMode="DARKEN" dividerPositions="0.1638418079096045" prefHeight="800.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <items>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="800.0" prefWidth="200.0">
+                  <AnchorPane minHeight="0.0" minWidth="200.0" prefHeight="800.0" prefWidth="200.0">
                      <children>
                         <ListView fx:id="componentList" layoutY="0" prefHeight="400.0" prefWidth="200.0" AnchorPane.bottomAnchor="400.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         <SplitPane dividerPositions="0.5" layoutX="0" layoutY="400.0" orientation="VERTICAL" prefHeight="400.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="400.0">
                            <items>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                              <AnchorPane minHeight="0.0" minWidth="0" prefHeight="100.0" prefWidth="160.0">
                                  <children>
                                     <Button fx:id="addInputButton" layoutX="55.0" layoutY="54.0" mnemonicParsing="false" text="Add Input" onAction="#addInput"/>
                                     <Button fx:id="removeInputButton" layoutX="55.0" layoutY="97.0" mnemonicParsing="false" text="Remove Input" onAction="#removeInput" />
@@ -38,7 +38,7 @@
                         </SplitPane>
                      </children>
                   </AnchorPane>
-                  <Pane fx:id="actionPane" minHeight="0.0" minWidth="0.0" prefHeight="800.0" prefWidth="1000" />
+                  <Pane fx:id="actionPane" minHeight="0.0" minWidth="1000.0" prefHeight="800.0" prefWidth="1000" />
                </items>
             </SplitPane>
          </children>

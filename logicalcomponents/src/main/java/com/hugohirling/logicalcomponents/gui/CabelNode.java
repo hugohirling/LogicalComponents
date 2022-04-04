@@ -4,6 +4,7 @@ import com.hugohirling.logicalcomponents.gui.components.ComponentNode;
 import com.hugohirling.logicalcomponents.gui.knots.GeneralInputNode;
 import com.hugohirling.logicalcomponents.gui.knots.KnotNode;
 import com.hugohirling.logicalcomponents.gui.knots.KnotNode.KnotType;
+import com.hugohirling.logicalcomponents.util.KnotChangeListener;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -39,6 +40,10 @@ public class CabelNode extends Polyline implements InvalidationListener{
         this.inputNode.getParent().boundsInParentProperty().addListener(this);
         this.outputNode.getParent().boundsInParentProperty().addListener(this);
 
+        this.inputNode.setOnKnotChangeListener(()-> {
+            this.update();
+        });
+
         this.colorize();
         this.setOutputStatus();
 
@@ -48,6 +53,11 @@ public class CabelNode extends Polyline implements InvalidationListener{
         });
 
         this.setPoints();
+    }
+
+    private void update() {
+        this.colorize();
+        this.setOutputStatus();
     }
 
     private void setOutputStatus() {

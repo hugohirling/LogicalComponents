@@ -56,6 +56,9 @@ public abstract class KnotNode extends Arc {
             this.setOnMouseClicked(mouseEvent -> {
                 this.status = !this.status;
                 this.colorize();
+                if(listener != null) {
+                    listener.onStatusChanged();
+                }
             });
         }
 
@@ -79,7 +82,6 @@ public abstract class KnotNode extends Arc {
             if (event.getGestureSource() instanceof KnotNode) {
                 final KnotNode sourceKnotNode = (KnotNode) event.getGestureSource();
 
-                this.root.getChildren().remove(sourceKnotNode.getTempCabelNode());
                 if (this.knotType != sourceKnotNode.getKnotType()) {
                     if (this.knotType == KnotType.INPUT) {
                         this.root.getChildren().add(new CabelNode(sourceKnotNode, this));
@@ -90,20 +92,9 @@ public abstract class KnotNode extends Arc {
             }
         });
 
-        // this.setOnMouseReleased(event -> {    
-        //     if(event.getTarget() instanceof KnotNode) {
-        //         final KnotNode targetKnotNode = (KnotNode) event.getTarget();
-
-        //         this.root.getChildren().remove(targetKnotNode.getTempCabelNode());
-        //         if(this.knotType != targetKnotNode.getKnotType()) {
-        //             if(this.knotType == KnotType.INPUT) {
-        //                 this.root.getChildren().add(new CabelNode(targetKnotNode, this));
-        //             }else {
-        //                 this.root.getChildren().add(new CabelNode(this, targetKnotNode));
-        //             }
-        //         }
-        //     }
-        // });
+        this.setOnMouseReleased(event -> {    
+            this.root.getChildren().remove(this.tempCabelNode);
+        });
     }
 
     /**
