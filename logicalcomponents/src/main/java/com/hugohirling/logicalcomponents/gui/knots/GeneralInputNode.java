@@ -17,7 +17,7 @@ import javafx.scene.text.Font;
  */
 public class GeneralInputNode extends BorderPane{
     
-    private final InputKnotNode inputKnotNode;
+    private final OutputKnotNode outputKnotNode;
     private final TextField textField;
 
     private final Pane root;
@@ -37,9 +37,9 @@ public class GeneralInputNode extends BorderPane{
         this.textField.setPrefWidth(Control.USE_COMPUTED_SIZE);
         this.textField.prefColumnCountProperty().bind(this.textField.textProperty().length());
 
-        this.inputKnotNode = new InputKnotNode(this.root, 0, 0, status, true);
+        this.outputKnotNode = new OutputKnotNode(this.root, 0, 0, status, true, 270);
 
-        this.setLeft(this.inputKnotNode);
+        this.setLeft(this.outputKnotNode);
         this.setRight(this.textField);
     }
 
@@ -47,8 +47,8 @@ public class GeneralInputNode extends BorderPane{
         this.setLayoutY(y);
     }
 
-    public InputKnotNode getInputKnotNode() {
-        return this.inputKnotNode;
+    public OutputKnotNode getOutputKnotNode() {
+        return this.outputKnotNode;
     }
 }
 

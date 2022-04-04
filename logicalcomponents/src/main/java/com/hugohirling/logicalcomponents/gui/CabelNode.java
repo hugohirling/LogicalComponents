@@ -1,6 +1,9 @@
 package com.hugohirling.logicalcomponents.gui;
 
 import com.hugohirling.logicalcomponents.gui.components.ComponentNode;
+import com.hugohirling.logicalcomponents.gui.knots.GeneralInputNode;
+import com.hugohirling.logicalcomponents.gui.knots.KnotNode;
+import com.hugohirling.logicalcomponents.gui.knots.KnotNode.KnotType;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -18,62 +21,72 @@ import javafx.scene.shape.Polyline;
  */
 public class CabelNode extends Polyline implements InvalidationListener{
 
-    private final ComponentNode inputNode;
-    private final ComponentNode outputNode;
-
-    private final int inputIndex;
-    private final int outputIndex;
+    private final KnotNode inputNode;
+    private final KnotNode outputNode;
     
-    public CabelNode(final ComponentNode inputNode, final int inputIndex, final ComponentNode outputNode, final int outputIndex) {
+    public CabelNode(final KnotNode inputNode, final KnotNode outputNode) {
         super();
         this.setStrokeWidth(3);
+
+        if((inputNode.getKnotType() != KnotType.OUTPUT) ||
+                (outputNode.getKnotType() != KnotType.INPUT)) {
+            throw new IllegalArgumentException("The inputKnot must be a output knot. The outputKnot must be a input knot.");
+        }
 
         this.inputNode = inputNode;
         this.outputNode = outputNode;
 
-        this.inputIndex = inputIndex;
-        this.outputIndex = outputIndex;
-
-        this.inputNode.boundsInParentProperty().addListener(this);
-        this.outputNode.boundsInParentProperty().addListener(this);
+        this.inputNode.getParent().boundsInParentProperty().addListener(this);
+        this.outputNode.getParent().boundsInParentProperty().addListener(this);
 
         this.colorize();
         this.setOutputStatus();
 
-        this.inputNode.getOutputNodes().get(inputIndex).setOnKnotChangeListener(() -> {
+        this.inputNode.setOnKnotChangeListener(() -> {
             this.colorize();
             this.setOutputStatus();
         });
+
+        this.setPoints();
     }
 
     private void setOutputStatus() {
-        this.outputNode.getInputNodes().get(this.outputIndex).setStatus(
-                this.inputNode.getOutputNodes().get(this.inputIndex).getStatus()
+        this.outputNode.setStatus(
+                this.inputNode.getStatus()
         );
     }
 
     private void colorize() {
-        if(inputNode.getOutputNodes().get(this.inputIndex).getStatus()) {
+        if(inputNode.getStatus()) {
             this.setStroke(Color.RED);
         }else {
             this.setStroke(Color.BLACK);
         }
     }
 
-    @Override
-    public void invalidated(final Observable observable) {
-        final Point2D inputPoint = inputNode.getOutputNodes().get(this.inputIndex).getLocation();
-        final Point2D outputPoint = this.outputNode.getInputNodes().get(this.outputIndex).getLocation();
+    private void setPoints() {
+        final Point2D inputPoint = this.inputNode.getLocation();
+        final Point2D outputPoint = this.outputNode.getLocation();
 
-        final Bounds boundsInSceneInputNode = this.inputNode.getBoundsInParent();
-        final Bounds boundsInSceneOutputNode = this.outputNode.getBoundsInParent();
+        final Bounds boundsInSceneInputNode = this.inputNode.getParent().getBoundsInParent();
+        final Bounds boundsInSceneOutputNode = this.outputNode.getParent().getBoundsInParent();
         final double inputX = boundsInSceneInputNode.getMinX();
         final double inputY = boundsInSceneInputNode.getMinY();
         final double outputX = boundsInSceneOutputNode.getMinX();
         final double outputY = boundsInSceneOutputNode.getMinY();
 
+        double offsetY = 0;
+        if(this.inputNode.getParent() instanceof GeneralInputNode) {
+            offsetY = 12.5;
+        }
+
         this.getPoints().clear();
-        this.getPoints().addAll(inputPoint.getX() + inputX, inputPoint.getY() + inputY,
+        this.getPoints().addAll(inputPoint.getX() + inputX, inputPoint.getY() + inputY + offsetY,
                 outputPoint.getX() + outputX, outputPoint.getY() + outputY);
+    }
+
+    @Override
+    public void invalidated(final Observable observable) {
+        this.setPoints();
     }
 }

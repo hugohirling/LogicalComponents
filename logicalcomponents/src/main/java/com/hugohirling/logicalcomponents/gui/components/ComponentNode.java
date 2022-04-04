@@ -174,6 +174,10 @@ public abstract class ComponentNode extends Pane {
 
         //DraggEvent
         this.setOnMouseDragged(event -> {
+            if(event.getTarget() != this.rectangle && event.getTarget() != this.label) {
+                return;
+            }
+
             final double newX = event.getSceneX() - this.mouseAnchorX - 200;
             final double newY = event.getSceneY() - this.mouseAnchorY;
 

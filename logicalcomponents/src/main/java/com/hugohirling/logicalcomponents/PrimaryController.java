@@ -94,10 +94,10 @@ public class PrimaryController{
 
         actionPane.getChildren().addAll(this.inputList);
 
-        actionPane.getChildren().add(new CabelNode(this.componentList.get(2), 0,
-                this.componentList.get(1), 0));
-        actionPane.getChildren().add(new CabelNode(this.componentList.get(3), 0,
-                this.componentList.get(1), 1));
+        actionPane.getChildren().add(new CabelNode(this.componentList.get(2).getOutputNodes().get(0),
+                this.componentList.get(1).getInputNodes().get(0)));
+        actionPane.getChildren().add(new CabelNode(this.componentList.get(3).getOutputNodes().get(0),
+                this.componentList.get(1).getInputNodes().get(1)));
 
         actionPane.setOnMouseClicked(mouseEvent -> {
             for (final GeneralInputNode node : this.inputList) {

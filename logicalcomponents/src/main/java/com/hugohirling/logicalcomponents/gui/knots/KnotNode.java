@@ -1,11 +1,13 @@
 package com.hugohirling.logicalcomponents.gui.knots;
 
+import com.hugohirling.logicalcomponents.gui.CabelNode;
 import com.hugohirling.logicalcomponents.util.KnotChangeListener;
 
 import javafx.geometry.Point2D;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
+import javafx.scene.shape.Polyline;
 
 /**
  * @author Hugo Hirling
@@ -29,6 +31,8 @@ public abstract class KnotNode extends Arc {
 
     private KnotChangeListener listener;
 
+    private final Polyline tempCabelNode;
+
     public KnotNode(final Pane root, final double x, final double y, final int startAngle, final KnotType knotType) {
         this(root, x, y, false, startAngle, knotType, false);
     }
@@ -40,6 +44,7 @@ public abstract class KnotNode extends Arc {
         this.changeable = changeable;
         this.knotType = knotType;
         this.startAngle = startAngle;
+        this.tempCabelNode = new Polyline();
 
         this.colorize();
 
@@ -53,6 +58,52 @@ public abstract class KnotNode extends Arc {
                 this.colorize();
             });
         }
+
+        this.setOnDragDetected(event -> {
+            this.startFullDrag();
+        });
+
+        this.setOnMouseDragged(event -> {
+            final Point2D center = this.localToScene(this.getCenterX(), this.getCenterY());
+
+            if(this.root.getChildren().contains(this.tempCabelNode)) {
+                this.tempCabelNode.getPoints().clear();
+                this.tempCabelNode.getPoints().addAll(center.getX()-200, center.getY(), event.getSceneX()-200, event.getSceneY());
+            }else {
+                this.tempCabelNode.getPoints().addAll(center.getX()-200, center.getY(), event.getSceneX()-200, event.getSceneY());
+                this.root.getChildren().add(this.tempCabelNode);
+            }
+        });
+
+        this.setOnMouseDragReleased(event -> {
+            if (event.getGestureSource() instanceof KnotNode) {
+                final KnotNode sourceKnotNode = (KnotNode) event.getGestureSource();
+
+                this.root.getChildren().remove(sourceKnotNode.getTempCabelNode());
+                if (this.knotType != sourceKnotNode.getKnotType()) {
+                    if (this.knotType == KnotType.INPUT) {
+                        this.root.getChildren().add(new CabelNode(sourceKnotNode, this));
+                    } else {
+                        this.root.getChildren().add(new CabelNode(this, sourceKnotNode));
+                    }
+                }
+            }
+        });
+
+        // this.setOnMouseReleased(event -> {    
+        //     if(event.getTarget() instanceof KnotNode) {
+        //         final KnotNode targetKnotNode = (KnotNode) event.getTarget();
+
+        //         this.root.getChildren().remove(targetKnotNode.getTempCabelNode());
+        //         if(this.knotType != targetKnotNode.getKnotType()) {
+        //             if(this.knotType == KnotType.INPUT) {
+        //                 this.root.getChildren().add(new CabelNode(targetKnotNode, this));
+        //             }else {
+        //                 this.root.getChildren().add(new CabelNode(this, targetKnotNode));
+        //             }
+        //         }
+        //     }
+        // });
     }
 
     /**
@@ -85,5 +136,13 @@ public abstract class KnotNode extends Arc {
 
     public void setOnKnotChangeListener(final KnotChangeListener listener) {
         this.listener = listener;
+    }
+
+    public KnotType getKnotType() {
+        return this.knotType;
+    }
+
+    public Polyline getTempCabelNode() {
+        return this.tempCabelNode;
     }
 }
