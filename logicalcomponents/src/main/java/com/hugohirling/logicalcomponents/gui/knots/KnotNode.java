@@ -1,5 +1,8 @@
 package com.hugohirling.logicalcomponents.gui.knots;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.hugohirling.logicalcomponents.gui.CabelNode;
 import com.hugohirling.logicalcomponents.util.KnotChangeListener;
 
@@ -27,17 +30,20 @@ public abstract class KnotNode extends Arc {
     protected final int startAngle;
     private final boolean changeable;
 
+    private final List<CabelNode> cabelNodes;
+    private final int connectionCount;
+
     private final Pane root;
 
-    private KnotChangeListener listener;
+    private final List<KnotChangeListener> listeners;
 
     private final Polyline tempCabelNode;
 
-    public KnotNode(final Pane root, final double x, final double y, final int startAngle, final KnotType knotType) {
-        this(root, x, y, false, startAngle, knotType, false);
+    public KnotNode(final Pane root, final double x, final double y, final int startAngle, final KnotType knotType, final int connectionCount) {
+        this(root, x, y, false, startAngle, knotType, false, connectionCount);
     }
 
-    public KnotNode(final Pane root, final double x, final double y, final boolean status, final int startAngle, final KnotType knotType, final boolean changeable) {
+    public KnotNode(final Pane root, final double x, final double y, final boolean status, final int startAngle, final KnotType knotType, final boolean changeable, final int connectionCount) {
         super(x, y, 12.5, 12.5, startAngle, 180);
 
         this.root = root;
@@ -45,6 +51,10 @@ public abstract class KnotNode extends Arc {
         this.knotType = knotType;
         this.startAngle = startAngle;
         this.tempCabelNode = new Polyline();
+        this.cabelNodes = new ArrayList<>();
+        this.connectionCount = connectionCount;
+
+        this.listeners = new ArrayList<>();
 
         this.colorize();
 
@@ -56,9 +66,7 @@ public abstract class KnotNode extends Arc {
             this.setOnMouseClicked(mouseEvent -> {
                 this.status = !this.status;
                 this.colorize();
-                if(listener != null) {
-                    listener.onStatusChanged();
-                }
+                this.listeners.forEach(listener -> listener.onStatusChanged());
             });
         }
 
@@ -83,11 +91,17 @@ public abstract class KnotNode extends Arc {
                 final KnotNode sourceKnotNode = (KnotNode) event.getGestureSource();
 
                 if (this.knotType != sourceKnotNode.getKnotType()) {
+                    CabelNode cabelNode;
                     if (this.knotType == KnotType.INPUT) {
-                        this.root.getChildren().add(new CabelNode(sourceKnotNode, this));
+                        cabelNode = new CabelNode(sourceKnotNode, this);
                     } else {
-                        this.root.getChildren().add(new CabelNode(this, sourceKnotNode));
+                        cabelNode = new CabelNode(this, sourceKnotNode);
                     }
+                    if(this.isConnectionFree() && sourceKnotNode.isConnectionFree()) {
+                        this.addConnection(cabelNode);
+                        sourceKnotNode.addConnection(cabelNode);
+                        this.root.getChildren().add(0, cabelNode);
+                    }                  
                 }
             }
         });
@@ -115,9 +129,7 @@ public abstract class KnotNode extends Arc {
         if(this.status != status) {
             this.status = status;
             this.colorize();
-            if(this.listener != null) {
-                this.listener.onStatusChanged();
-            }
+            this.listeners.forEach(listener -> listener.onStatusChanged());
         }
     }
 
@@ -126,7 +138,7 @@ public abstract class KnotNode extends Arc {
     }
 
     public void setOnKnotChangeListener(final KnotChangeListener listener) {
-        this.listener = listener;
+        this.listeners.add(listener);
     }
 
     public KnotType getKnotType() {
@@ -135,5 +147,21 @@ public abstract class KnotNode extends Arc {
 
     public Polyline getTempCabelNode() {
         return this.tempCabelNode;
+    }
+
+    public boolean isConnectionFree() {
+        return this.cabelNodes.size() < this.connectionCount;
+    }
+
+    public void addConnection(final CabelNode cabelNode) {
+        if(!this.isConnectionFree()) {
+            throw new IllegalArgumentException("This knot has reached its maximum connection count");
+        }
+
+        this.cabelNodes.add(cabelNode);
+    }
+
+    public void removeConnection(final CabelNode cabelNode) {
+        this.cabelNodes.remove(cabelNode);
     }
 }

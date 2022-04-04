@@ -12,10 +12,10 @@ import javafx.scene.layout.Pane;
 public class InputKnotNode extends KnotNode {
 
     public InputKnotNode(final Pane root, final double x, final double y, final boolean status, final boolean changeable) {
-        super(root, x, y, status, 270, KnotType.INPUT, changeable);
+        super(root, x, y, status, 270, KnotType.INPUT, changeable, 1);
     }
     
     public InputKnotNode(final Pane root, final double x, final double y) {
-        super(root, x, y, 270, KnotType.INPUT);
+        super(root, x, y, 270, KnotType.INPUT, 1);
     }
 }
