@@ -1,4 +1,4 @@
-package com.hugohirling.logicalcomponents.gui.components;
+package com.hugohirling.logicalcomponents.gui.knots;
 
 
 import javafx.scene.control.Control;

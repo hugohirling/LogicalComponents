@@ -4,16 +4,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.hugohirling.logicalcomponents.components.specific.ANDComponent;
-import com.hugohirling.logicalcomponents.components.specific.NOTComponent;
-import com.hugohirling.logicalcomponents.components.specific.ORComponent;
-import com.hugohirling.logicalcomponents.gui.components.CabelNode;
+import com.hugohirling.logicalcomponents.gui.CabelNode;
 import com.hugohirling.logicalcomponents.gui.components.ComponentNode;
-import com.hugohirling.logicalcomponents.gui.components.GeneralInputNode;
-import com.hugohirling.logicalcomponents.gui.components.TempCabelNode;
-import com.hugohirling.logicalcomponents.util.KnotPullListener;
+import com.hugohirling.logicalcomponents.gui.components.specific.ANDComponentNode;
+import com.hugohirling.logicalcomponents.gui.components.specific.NOTComponentNode;
+import com.hugohirling.logicalcomponents.gui.components.specific.ORComponentNode;
+import com.hugohirling.logicalcomponents.gui.knots.GeneralInputNode;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.layout.Pane;
 
 /**
@@ -84,9 +83,10 @@ public class PrimaryController{
 
     @FXML
     public void initialize() {
-        this.componentList.add(new ComponentNode(this.actionPane, new ORComponent()));
-        this.componentList.add(new ComponentNode(this.actionPane, new ANDComponent()));
-        this.componentList.add(new ComponentNode(this.actionPane, new NOTComponent()));
+        this.componentList.add(new ORComponentNode(this.actionPane, new Point2D(0, 0)));
+        this.componentList.add(new ANDComponentNode(this.actionPane, new Point2D(100, 100)));
+        this.componentList.add(new NOTComponentNode(this.actionPane, new Point2D(200, 200)));
+        this.componentList.add(new NOTComponentNode(this.actionPane, new Point2D(300, 300)));
 
         this.inputList.add(new GeneralInputNode(this.actionPane, 400));
 
@@ -95,8 +95,9 @@ public class PrimaryController{
         actionPane.getChildren().addAll(this.inputList);
 
         actionPane.getChildren().add(new CabelNode(this.componentList.get(2), 0,
-                this.componentList.get(0), 0));
-
+                this.componentList.get(1), 0));
+        actionPane.getChildren().add(new CabelNode(this.componentList.get(3), 0,
+                this.componentList.get(1), 1));
 
         actionPane.setOnMouseClicked(mouseEvent -> {
             for (final GeneralInputNode node : this.inputList) {
