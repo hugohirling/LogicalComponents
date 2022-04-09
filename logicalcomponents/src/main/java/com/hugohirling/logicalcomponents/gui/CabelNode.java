@@ -1,10 +1,9 @@
 package com.hugohirling.logicalcomponents.gui;
 
-import com.hugohirling.logicalcomponents.gui.components.ComponentNode;
-import com.hugohirling.logicalcomponents.gui.knots.GeneralInputNode;
 import com.hugohirling.logicalcomponents.gui.knots.KnotNode;
 import com.hugohirling.logicalcomponents.gui.knots.KnotNode.KnotType;
-import com.hugohirling.logicalcomponents.util.KnotChangeListener;
+import com.hugohirling.logicalcomponents.gui.knots.appnodes.AppInputKnotNode;
+import com.hugohirling.logicalcomponents.gui.knots.appnodes.AppOutputKnotNode;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -86,13 +85,18 @@ public class CabelNode extends Polyline implements InvalidationListener{
         final double outputY = boundsInSceneOutputNode.getMinY();
 
         double offsetY = 0;
-        if(this.inputNode.getParent() instanceof GeneralInputNode) {
-            offsetY = 12.5;
+        double offsetX = 0;
+        // if(this.inputNode.getParent() instanceof AppInputKnotNode) {
+        //     offsetY = 12.5;
+        // }
+        if(this.outputNode.getParent() instanceof AppOutputKnotNode) {
+            offsetX = 105;
         }
+        
 
         this.getPoints().clear();
         this.getPoints().addAll(inputPoint.getX() + inputX, inputPoint.getY() + inputY + offsetY,
-                outputPoint.getX() + outputX, outputPoint.getY() + outputY);
+                outputPoint.getX() + outputX + offsetX, outputPoint.getY() + outputY);
     }
 
     @Override

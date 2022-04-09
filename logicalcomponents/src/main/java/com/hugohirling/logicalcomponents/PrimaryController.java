@@ -9,7 +9,8 @@ import com.hugohirling.logicalcomponents.gui.components.ComponentNode;
 import com.hugohirling.logicalcomponents.gui.components.specific.ANDComponentNode;
 import com.hugohirling.logicalcomponents.gui.components.specific.NOTComponentNode;
 import com.hugohirling.logicalcomponents.gui.components.specific.ORComponentNode;
-import com.hugohirling.logicalcomponents.gui.knots.GeneralInputNode;
+import com.hugohirling.logicalcomponents.gui.knots.appnodes.AppInputKnotNode;
+import com.hugohirling.logicalcomponents.gui.knots.appnodes.AppOutputKnotNode;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -17,7 +18,7 @@ import javafx.scene.layout.Pane;
 
 /**
  * @author Hugo Hirling
- * @version 30.03.2022
+ * @version 09.04.2022
  * @url https://hugohirling.com
  * 
  * Controller of the Primary View/Scene
@@ -26,11 +27,13 @@ public class PrimaryController{
 
     private final List<ComponentNode> componentList;
 
-    private final List<GeneralInputNode> inputList;
+    private final List<AppInputKnotNode> inputList;
+    private final List<AppOutputKnotNode> outputList;
 
     public PrimaryController() {
         this.componentList = new ArrayList<>();
         this.inputList = new ArrayList<>();
+        this.outputList = new ArrayList<>();
     }
 
     @FXML
@@ -48,7 +51,7 @@ public class PrimaryController{
             for(int i=0; i<this.inputList.size(); i++) {
                 this.inputList.get(i).setY(startY + i*(diameter + spacer));
             }
-            this.inputList.add(new GeneralInputNode(
+            this.inputList.add(new AppInputKnotNode(
                     this.actionPane, startY + this.inputList.size()*(diameter + spacer)));
             actionPane.getChildren().add(this.inputList.get(this.inputList.size()-1));
         }
@@ -57,7 +60,7 @@ public class PrimaryController{
     @FXML
     private void removeInput() throws IOException {
         if(this.inputList.size() > 1) {
-            final GeneralInputNode node = this.inputList.get(this.inputList.size() - 1);
+            final AppInputKnotNode node = this.inputList.get(this.inputList.size() - 1);
 
             actionPane.getChildren().remove(node);
             this.inputList.remove(node);
@@ -75,10 +78,39 @@ public class PrimaryController{
     
     @FXML
     private void addOutput() throws IOException {
+        final double spacer = 30;
+        final double diameter = 25;
+
+        final double startY = 400 - this.outputList.size() * (spacer / 2 + diameter / 2);
+
+        // Preventing to many Outputs
+        if (startY > 75) {
+            for (int i = 0; i < this.outputList.size(); i++) {
+                this.outputList.get(i).setY(startY + i * (diameter + spacer));
+            }
+            this.outputList.add(new AppOutputKnotNode(
+                    this.actionPane, startY + this.outputList.size() * (diameter + spacer)));
+            actionPane.getChildren().add(this.outputList.get(this.outputList.size() - 1));
+        }
     }
     
     @FXML
     private void removeOutput() throws IOException {
+        if (this.outputList.size() > 1) {
+            final AppOutputKnotNode node = this.outputList.get(this.outputList.size() - 1);
+
+            actionPane.getChildren().remove(node);
+            this.outputList.remove(node);
+
+            final double spacer = 30;
+            final double diameter = 25;
+
+            final double startY = 400 - (this.outputList.size() - 1) * (spacer / 2 + diameter / 2);
+
+            for (int i = 0; i < this.outputList.size(); i++) {
+                this.outputList.get(i).setY(startY + i * (diameter + spacer));
+            }
+        }
     }
 
     @FXML
@@ -88,11 +120,13 @@ public class PrimaryController{
         this.componentList.add(new NOTComponentNode(this.actionPane, new Point2D(200, 200)));
         this.componentList.add(new NOTComponentNode(this.actionPane, new Point2D(300, 300)));
 
-        this.inputList.add(new GeneralInputNode(this.actionPane, 400));
+        this.inputList.add(new AppInputKnotNode(this.actionPane, 400));
+        this.outputList.add(new AppOutputKnotNode(this.actionPane, 400));
 
         actionPane.getChildren().addAll(this.componentList);
 
         actionPane.getChildren().addAll(this.inputList);
+        actionPane.getChildren().addAll(this.outputList);
 
         actionPane.getChildren().add(new CabelNode(this.componentList.get(2).getOutputNodes().get(0),
                 this.componentList.get(1).getInputNodes().get(0)));
@@ -100,7 +134,7 @@ public class PrimaryController{
                 this.componentList.get(1).getInputNodes().get(1)));
 
         actionPane.setOnMouseClicked(mouseEvent -> {
-            for (final GeneralInputNode node : this.inputList) {
+            for (final AppInputKnotNode node : this.inputList) {
                 if (!node.equals(mouseEvent.getSource())) {
                     actionPane.requestFocus();
                 }

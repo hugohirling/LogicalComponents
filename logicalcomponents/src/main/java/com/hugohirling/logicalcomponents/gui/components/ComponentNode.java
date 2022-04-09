@@ -183,11 +183,9 @@ public abstract class ComponentNode extends Pane {
 
             if (newX > 0 && newX < (1000 - this.compWidth)) {
                 this.setLayoutX(newX);
-                //System.out.println("NewX: event.getSceneX()=" + event.getSceneX() + " mouseAnchorX=" + this.mouseAnchorX);
             }
             if (newY > 0 && newY < (800 - this.compHeight)) {
                 this.setLayoutY(newY);
-                //System.out.println("NewY: event.getSceneY()=" + event.getSceneY() + " mouseAnchorY=" + this.mouseAnchorY);
             }
         });
     }

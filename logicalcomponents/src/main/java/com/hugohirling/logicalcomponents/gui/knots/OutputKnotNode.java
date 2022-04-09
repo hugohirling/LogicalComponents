@@ -1,6 +1,5 @@
 package com.hugohirling.logicalcomponents.gui.knots;
 
-import com.hugohirling.logicalcomponents.gui.knots.KnotNode.KnotType;
 
 import javafx.scene.layout.Pane;
 

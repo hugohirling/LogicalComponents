@@ -18,4 +18,8 @@ public class InputKnotNode extends KnotNode {
     public InputKnotNode(final Pane root, final double x, final double y) {
         super(root, x, y, 270, KnotType.INPUT, 1);
     }
+
+    public InputKnotNode(final Pane root, final double x, final double y, final int startAngle) {
+        super(root, x, y, startAngle, KnotType.INPUT, 1);
+    }
 }
