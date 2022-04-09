@@ -28,16 +28,36 @@ public class PrimaryController{
     private final List<AppInputKnotNode> inputList;
     private final List<AppOutputKnotNode> outputList;
 
+    private final List<ComponentShowNode> componentList;
+
     public PrimaryController() {
+        this.componentList = new ArrayList<>();
         this.inputList = new ArrayList<>();
         this.outputList = new ArrayList<>();
+
+
+        this.componentList.add(
+            new ComponentShowNode("OR",
+                () -> {this.actionPane.getChildren().add(new ORComponentNode(this.actionPane, new Point2D(500, 400)));}
+            )
+        );
+        this.componentList.add(
+            new ComponentShowNode("AND",
+                () -> {this.actionPane.getChildren().add(new ANDComponentNode(this.actionPane, new Point2D(500, 400)));}
+            )
+        );
+        this.componentList.add(
+            new ComponentShowNode("NOT",
+                () -> {this.actionPane.getChildren().add(new NOTComponentNode(this.actionPane, new Point2D(500, 400)));}
+            )
+        );
     }
 
     @FXML
     private Pane actionPane;
 
     @FXML
-    private ListView componentListView;
+    private ListView<ComponentShowNode> componentListView;
 
     @FXML
     private void addInput() throws IOException{
@@ -130,14 +150,6 @@ public class PrimaryController{
             }
         });
 
-        this.componentListView.getItems().add(new ComponentShowNode("OR", () -> {
-            actionPane.getChildren().add(new ORComponentNode(this.actionPane, new Point2D(500, 400)));
-        }));
-        this.componentListView.getItems().add(new ComponentShowNode("AND", () -> {
-            actionPane.getChildren().add(new ANDComponentNode(this.actionPane, new Point2D(500, 400)));
-        }));
-        this.componentListView.getItems().add(new ComponentShowNode("NOT", () -> {
-            actionPane.getChildren().add(new NOTComponentNode(this.actionPane, new Point2D(500, 400)));
-        }));
+        this.componentListView.getItems().addAll(this.componentList);
     }
 }
