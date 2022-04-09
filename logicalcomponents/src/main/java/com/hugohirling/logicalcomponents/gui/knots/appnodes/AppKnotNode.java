@@ -5,7 +5,6 @@ import com.hugohirling.logicalcomponents.gui.knots.KnotNode;
 import com.hugohirling.logicalcomponents.gui.knots.OutputKnotNode;
 import com.hugohirling.logicalcomponents.gui.knots.KnotNode.KnotType;
 
-import javafx.scene.control.Control;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -45,8 +44,8 @@ public abstract class AppKnotNode extends BorderPane{
         }else {
             this.knotNode = new InputKnotNode(root, 0, 12.5, 90);
             
-            this.setRight(this.knotNode);
             this.setLeft(this.textField);
+            this.setRight(this.knotNode);       
 
             this.setLayoutX(1000 - this.knotNode.getRadiusX() - 105);
 

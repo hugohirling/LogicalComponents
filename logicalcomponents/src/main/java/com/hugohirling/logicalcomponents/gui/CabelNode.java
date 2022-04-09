@@ -2,7 +2,6 @@ package com.hugohirling.logicalcomponents.gui;
 
 import com.hugohirling.logicalcomponents.gui.knots.KnotNode;
 import com.hugohirling.logicalcomponents.gui.knots.KnotNode.KnotType;
-import com.hugohirling.logicalcomponents.gui.knots.appnodes.AppInputKnotNode;
 import com.hugohirling.logicalcomponents.gui.knots.appnodes.AppOutputKnotNode;
 
 import javafx.beans.InvalidationListener;
