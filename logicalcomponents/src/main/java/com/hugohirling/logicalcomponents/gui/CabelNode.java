@@ -46,6 +46,9 @@ public class CabelNode extends Polyline implements InvalidationListener{
         this.outputNode.getParent().boundsInParentProperty().addListener(this);
 
         this.inputNode.setOnKnotChangeListener(()-> {
+            if (this.inputNode == null || this.outputNode == null) {
+                return;
+            }
             this.update();
         });
 
