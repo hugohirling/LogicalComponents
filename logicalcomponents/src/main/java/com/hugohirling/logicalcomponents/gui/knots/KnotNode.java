@@ -93,9 +93,9 @@ public abstract class KnotNode extends Arc {
                 if (this.knotType != sourceKnotNode.getKnotType()) {
                     CabelNode cabelNode;
                     if (this.knotType == KnotType.INPUT) {
-                        cabelNode = new CabelNode(sourceKnotNode, this);
+                        cabelNode = new CabelNode(root, sourceKnotNode, this);
                     } else {
-                        cabelNode = new CabelNode(this, sourceKnotNode);
+                        cabelNode = new CabelNode(root, this, sourceKnotNode);
                     }
                     if(this.isConnectionFree() && sourceKnotNode.isConnectionFree()) {
                         this.addConnection(cabelNode);

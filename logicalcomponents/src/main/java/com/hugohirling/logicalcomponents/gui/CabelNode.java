@@ -8,6 +8,8 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 
@@ -22,10 +24,14 @@ public class CabelNode extends Polyline implements InvalidationListener{
 
     private final KnotNode inputNode;
     private final KnotNode outputNode;
+
+    private final Pane root;
     
-    public CabelNode(final KnotNode inputNode, final KnotNode outputNode) {
+    public CabelNode(final Pane root, final KnotNode inputNode, final KnotNode outputNode) {
         super();
         this.setStrokeWidth(3);
+
+        this.root = root;
 
         if((inputNode.getKnotType() != KnotType.OUTPUT) ||
                 (outputNode.getKnotType() != KnotType.INPUT)) {
@@ -51,6 +57,16 @@ public class CabelNode extends Polyline implements InvalidationListener{
         });
 
         this.setPoints();
+
+        this.handleEvents();
+    }
+
+    private void handleEvents() {
+        this.setOnMouseClicked(mouseEvent -> {
+            if(mouseEvent.getButton() == MouseButton.SECONDARY) {
+                this.root.getChildren().remove(this);
+            }
+        });
     }
 
     private void update() {
