@@ -1,5 +1,6 @@
 package com.hugohirling.logicalcomponents.gui;
 
+
 import com.hugohirling.logicalcomponents.gui.knots.KnotNode;
 import com.hugohirling.logicalcomponents.gui.knots.KnotNode.KnotType;
 import com.hugohirling.logicalcomponents.gui.knots.appnodes.AppOutputKnotNode;
@@ -22,8 +23,8 @@ import javafx.scene.shape.Polyline;
  */
 public class CabelNode extends Polyline implements InvalidationListener{
 
-    private final KnotNode inputNode;
-    private final KnotNode outputNode;
+    private KnotNode inputNode;
+    private KnotNode outputNode;
 
     private final Pane root;
     
@@ -64,12 +65,19 @@ public class CabelNode extends Polyline implements InvalidationListener{
     private void handleEvents() {
         this.setOnMouseClicked(mouseEvent -> {
             if(mouseEvent.getButton() == MouseButton.SECONDARY) {
+                this.inputNode.removeConnection(this);
+                this.outputNode.removeConnection(this);
+                this.inputNode = null;
+                this.outputNode = null;
                 this.root.getChildren().remove(this);
             }
         });
     }
 
     private void update() {
+        if(this.inputNode == null || this.outputNode == null) {
+            return;
+        }
         this.colorize();
         this.setOutputStatus();
     }
@@ -116,6 +124,9 @@ public class CabelNode extends Polyline implements InvalidationListener{
 
     @Override
     public void invalidated(final Observable observable) {
+        if (this.inputNode == null || this.outputNode == null) {
+            return;
+        }
         this.setPoints();
     }
 }
